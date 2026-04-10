@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "resume": "bun index.ts"
+    "resume": "bun index.ts",
+    "auto": "./auto.sh"
   },
   "dependencies": {
     "node-html-parser": "^7.1.0",
