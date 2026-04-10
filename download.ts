@@ -6,7 +6,9 @@ if (!url) {
 }
 
 const fullUrl = url.startsWith("http") ? url : `https://${url}`;
-const response = await fetch(fullUrl);
+const fetchUrl = new URL(fullUrl);
+fetchUrl.searchParams.set("nc", Date.now().toString());
+const response = await fetch(fetchUrl.toString());
 const html = await response.text();
 
 const alias = process.argv[3];

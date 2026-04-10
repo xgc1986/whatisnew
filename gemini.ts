@@ -13,8 +13,20 @@ const prompt = `Aquí tienes un diff que muestra las diferencias entre dos captu
 ${diff}`;
 
 const proc = Bun.spawn(["gemini", "-p", prompt], {
-  stdout: "inherit",
+  stdout: "pipe",
   stderr: "inherit",
 });
 
+const output = await new Response(proc.stdout).text();
 await proc.exited;
+
+console.log(output);
+
+await Bun.spawn(["mkdir", "-p", "results"]).exited;
+const resultFile = `results/${name}.result.md`;
+const now = new Date();
+const date = now.toLocaleString("es-ES", { dateStyle: "full", timeStyle: "short" });
+const entry = `# ${date}\n\n${output.trim()}\n\n---\n\n`;
+
+const existing = await Bun.file(resultFile).text().catch(() => "");
+await Bun.write(resultFile, entry + existing);
