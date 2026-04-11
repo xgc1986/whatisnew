@@ -40,7 +40,7 @@ console.log(`${bold}${magenta}--- Web Diff ---${reset} ${dim}${fullUrl}${alias ?
 
 // 1. Descargar
 step(1, "Descargando web");
-await run(["download.ts", fullUrl, ...(alias ? [alias] : [])]);
+await run(["src/download.ts", fullUrl, ...(alias ? [alias] : [])]);
 
 // 2. Buscar el fichero descargado (el más reciente)
 const allHtml = Array.from(new Glob(`${name}.*.html`).scanSync("tmp"))
@@ -50,7 +50,7 @@ const newFile = `tmp/${allHtml.at(-1)}`;
 
 // 3. Limpiar
 step(2, "Limpiando HTML");
-await run(["clean.ts", newFile]);
+await run(["src/clean.ts", newFile]);
 
 // 4. Buscar ficheros clean para hacer diff
 const allClean = Array.from(new Glob(`${name}.*.clean.html`).scanSync("tmp")).sort();
@@ -66,7 +66,7 @@ const newClean = `tmp/${allClean.at(-1)}`;
 
 // 5. Diff
 step(3, "Generando diff");
-await run(["diff.ts", prevClean, newClean]);
+await run(["src/diff.ts", prevClean, newClean]);
 
 // Comprobar si hay cambios
 const diffContent = await Bun.file(`tmp/${name}.diff`).text().catch(() => "");
@@ -79,7 +79,7 @@ if (!diffContent.trim()) {
 
 // 6. Gemini
 step(4, "Analizando cambios con Gemini");
-const geminiProc = Bun.spawn(["bun", "gemini.ts", name], {
+const geminiProc = Bun.spawn(["bun", "src/gemini.ts", name], {
   stdout: "inherit",
   stderr: "inherit",
 });

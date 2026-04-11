@@ -1,7 +1,7 @@
 {
   "scripts": {
-    "resume": "bun index.ts",
-    "auto": "bun process.ts"
+    "resume": "bun src/index.ts",
+    "script": "bun src/process.ts"
   },
   "dependencies": {
     "node-html-parser": "^7.1.0",
