@@ -68,6 +68,15 @@ const newClean = `tmp/${allClean.at(-1)}`;
 step(3, "Generando diff");
 await run(["diff.ts", prevClean, newClean]);
 
+// Comprobar si hay cambios
+const diffContent = await Bun.file(`tmp/${name}.diff`).text().catch(() => "");
+if (!diffContent.trim()) {
+  console.log(`${yellow}No hay cambios.${reset}`);
+  await Bun.spawn(["rm", newFile, newClean]).exited;
+  console.log(`${bold}${green}--- Completado ---${reset}`);
+  process.exit(0);
+}
+
 // 6. Gemini
 step(4, "Analizando cambios con Gemini");
 const geminiProc = Bun.spawn(["bun", "gemini.ts", name], {
