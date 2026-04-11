@@ -6,7 +6,12 @@ if (!name) {
 }
 
 const diffFile = `tmp/${name}.diff`;
-const diff = await Bun.file(diffFile).text();
+const diff = await Bun.file(diffFile).text().catch(() => "");
+
+if (!diff.trim()) {
+  console.log("No hay cambios.");
+  process.exit(0);
+}
 
 const prompt = `Aquí tienes un diff que muestra las diferencias entre dos capturas de la misma web en momentos distintos. No me interesan los apartados técnicos del diff, solo quiero saber qué ha cambiado en el contenido visible de esa web en formato bullet points, para saber si me interesa entrar o no en esa web para ver más. No te enrolles y sé conciso. Responde en el idioma del contenido de la web.
 
