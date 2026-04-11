@@ -1,9 +1,12 @@
 {
   "scripts": {
     "resume": "bun src/index.ts",
-    "script": "bun src/process.ts"
+    "script": "bun src/process.ts",
+    "save": "bun src/sync-up.ts",
+    "load": "bun src/sync-down.ts"
   },
   "dependencies": {
+    "googleapis": "^171.4.0",
     "node-html-parser": "^7.1.0",
     "prettier": "^3.8.2"
   },

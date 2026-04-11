@@ -1,7 +1,8 @@
 .idea
+.env
+google-token.json
 node_modules
 results
-tmp
-scripts/*.sh
-!scripts/sample.sh
+memory
+scripts
 

@@ -10,15 +10,15 @@ if (!url) {
 const fullUrl = url.startsWith("http") ? url : `https://${url}`;
 const name = new URL(fullUrl).hostname.replace(/\./g, "_");
 
-const allHtml = Array.from(new Glob(`${name}.*.html`).scanSync("tmp"))
+const allHtml = Array.from(new Glob(`${name}.*.html`).scanSync("memory"))
   .filter((f) => !f.includes(".clean."))
   .sort();
 
-const allClean = Array.from(new Glob(`${name}.*.clean.html`).scanSync("tmp")).sort();
+const allClean = Array.from(new Glob(`${name}.*.clean.html`).scanSync("memory")).sort();
 
 const toDelete: string[] = [];
-if (allHtml.length > 0) toDelete.push(`tmp/${allHtml.at(-1)}`);
-if (allClean.length > 0) toDelete.push(`tmp/${allClean.at(-1)}`);
+if (allHtml.length > 0) toDelete.push(`memory/${allHtml.at(-1)}`);
+if (allClean.length > 0) toDelete.push(`memory/${allClean.at(-1)}`);
 
 if (toDelete.length === 0) {
   console.log("No hay ficheros que borrar.");

@@ -43,17 +43,17 @@ step(1, "Descargando web");
 await run(["src/download.ts", fullUrl, ...(alias ? [alias] : [])]);
 
 // 2. Buscar el fichero descargado (el más reciente)
-const allHtml = Array.from(new Glob(`${name}.*.html`).scanSync("tmp"))
+const allHtml = Array.from(new Glob(`${name}.*.html`).scanSync("memory"))
   .filter((f) => !f.includes(".clean."))
   .sort();
-const newFile = `tmp/${allHtml.at(-1)}`;
+const newFile = `memory/${allHtml.at(-1)}`;
 
 // 3. Limpiar
 step(2, "Limpiando HTML");
 await run(["src/clean.ts", newFile]);
 
 // 4. Buscar ficheros clean para hacer diff
-const allClean = Array.from(new Glob(`${name}.*.clean.html`).scanSync("tmp")).sort();
+const allClean = Array.from(new Glob(`${name}.*.clean.html`).scanSync("memory")).sort();
 
 if (allClean.length < 2) {
   console.log(`${yellow}Primera captura, no hay diff todavía.${reset}`);
@@ -61,15 +61,15 @@ if (allClean.length < 2) {
   process.exit(0);
 }
 
-const prevClean = `tmp/${allClean.at(-2)}`;
-const newClean = `tmp/${allClean.at(-1)}`;
+const prevClean = `memory/${allClean.at(-2)}`;
+const newClean = `memory/${allClean.at(-1)}`;
 
 // 5. Diff
 step(3, "Generando diff");
 await run(["src/diff.ts", prevClean, newClean]);
 
 // Comprobar si hay cambios
-const diffContent = await Bun.file(`tmp/${name}.diff`).text().catch(() => "");
+const diffContent = await Bun.file(`memory/${name}.diff`).text().catch(() => "");
 if (!diffContent.trim()) {
   console.log(`${yellow}No hay cambios.${reset}`);
   await Bun.spawn(["rm", newFile, newClean]).exited;

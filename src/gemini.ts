@@ -5,7 +5,7 @@ if (!name) {
     process.exit(1);
 }
 
-const diffFile = `tmp/${name}.diff`;
+const diffFile = `memory/${name}.diff`;
 const diff = await Bun.file(diffFile).text().catch(() => "");
 
 if (!diff.trim()) {

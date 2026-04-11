@@ -1,6 +1,6 @@
 import { Glob, $ } from "bun";
 
-const allFiles = Array.from(new Glob("*.html").scanSync("tmp")).sort();
+const allFiles = Array.from(new Glob("*.html").scanSync("memory")).sort();
 
 const groups = new Map<string, string[]>();
 for (const f of allFiles) {
@@ -16,8 +16,8 @@ for (const [, files] of groups) {
   if (files.length <= 1) continue;
   const toDelete = files.slice(0, -1);
   for (const f of toDelete) {
-    await $`rm tmp/${f}`.quiet();
-    console.log(`Eliminado tmp/${f}`);
+    await $`rm memory/${f}`.quiet();
+    console.log(`Eliminado memory/${f}`);
     total++;
   }
 }

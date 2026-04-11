@@ -21,7 +21,7 @@ const ts = now.getFullYear().toString()
   + now.getMinutes().toString().padStart(2, "0")
   + now.getSeconds().toString().padStart(2, "0");
 
-await Bun.spawn(["mkdir", "-p", "tmp"]).exited;
-const filename = `tmp/${name}.${ts}.html`;
+await Bun.spawn(["mkdir", "-p", "memory"]).exited;
+const filename = `memory/${name}.${ts}.html`;
 await Bun.write(filename, html);
 console.log(`Guardado en ${filename}`);

@@ -21,6 +21,6 @@ if (stderr) {
 }
 
 const basename = file1.split("/").pop()!.split(".")[0];
-const outFile = `tmp/${basename}.diff`;
+const outFile = `memory/${basename}.diff`;
 await Bun.write(outFile, output);
 console.log(`Guardado en ${outFile}`);
